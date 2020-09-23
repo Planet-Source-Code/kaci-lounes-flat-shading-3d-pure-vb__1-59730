@@ -1,0 +1,138 @@
+3D Flat Shading, by KACI Lounes March/2005
+==========================================
+
+Files included:
+===============
+FORMS    : Main.FRM
+MODULES  : Clipper.BAS
+           Maths3D.BAS
+           ExtractSort.BAS
+           Triangulation.BAS
+CLASSES  : No
+RES-FILE : No
+SNAPSHOT : Yes
+OTHERS   : Files for 3D datas (.KLF)
+==========================================
+
+Description:
+============
+
+ But NO, you don't dream !!
+
+This is a 3D FlatShade engine fully in vb!
+no references, no DLLs, no OCXs, just pure vb code.
+
+As you saw, there are four primatives (Grid, Sphere, Torus and Teapot),
+(see screen shot), The teapot is rotated for each
+frame rendered, into Z axis (Roll).
+
+The scene is lighted with two SpotLights, I described the algorithm
+of the SpotLight filter !!!!
+
+ Very sure, you can change the material values (!), as Diffusion, Specular,
+Attenuation and Fogging in the 'LoadScene' subroutine, great no ?!
+
+You have two mode for viewing the scene:
+
+1- Pitch/Yaw mode: You can control the position and the orientation
+2- LookAt mode: You can control only the position
+
+Controls:
+=========
+
+Space: Change view mode
+F Key: Enable/Disable Fogging mode
+Up/Down: walk to front/back
+Right/Left/Home/End: respectively: Pitch+/Pitch-/Yaw+/Yaw-
+NumPad 1, 2, 3: (Only LookAt mode) look at: Sphere/Teapot/Torus
+NumPad 4: Enable/Disable the first Spot
+NumPad 5: Enable/Disable the second Spot
+
+Requiements:
+============
+
+ This program requiere 4,5 Mo of memory as a compiled EXE.
+
+THE CORE OF ENGINE
+==================
+
+ Initalize the scene:
+  - Load the models, set the matrices, set the colors for the models
+  - Setup the camera and the spotlights
+  - Initialize sort arrays
+
+ [Main Loop]
+
+  Generate keyboard entries                                  ====== 'GetKeys' Procedure ======
+
+  Calculate the view matrix                                  ====== 'Process' Procedure ======
+  Calculate the teapot matrix for Z rotation
+  Transform the current model by his ID matrix
+  Transform the models by the view matrix
+  Projection (Perspective distortion)
+  Transform the spotlights vectors by the view matrix
+  Hidden faces removal:
+   - Check visibility by face normal, if yes:
+    - Face should be between Near & Far planes, if yes:
+     - Calculate the face center
+     - Shade the face
+     - Add the averaged depth of face to FacesDepth array
+     - Add the face index to FacesIndex array
+     - Add the mesh index to MeshsIndex array
+  Sort faces back to front
+
+  Clip the faces only if necessary, if yes:                  ====== 'Render' Procedure ======
+   - Triangulate polygons
+  Rasterization
+  Display
+  Clear sort arrays
+
+ [End Main Loop]
+
+========================
+
+ Yes, i see that this project is slow, but i prefer the
+quality that the speed, I would like this well
+that 'Maze of mouse' !! (Sorry for some peoples).
+
+ Note that in this program, we use only single precision or reals
+numbers (32 Bits), and the types of variables are just for the use,
+exemple: I need number form 2 to 120, then, the variable is 'Byte'
+data type (0 to 255), then these small optimizations reduce the
+size of the used memory.
+
+Future additions:
+=================
+
+- Flat and Gouraud Shading
+- Lighting effects with multiple lights and light types (Spot, Point, Directionel)
+- Support for texture mapping & wrapping & filtering
+- Z-Buffer, classical painter's algorithm
+- Shadow Casting
+- Full support for collisions detection
+- AntiAliasing
+
+  and mooore.......
+
+The code is written of a way that it is legible and understanding,
+and the 3D programming is clearly classified.
+
+About the author:
+=================
+
+ Well..... My name is KACI Lounes, my country is Algeria, I'am 17 (1988)
+ I interest to Computer Graphics/Games developement.
+
+ Sorry for the orthographic errors (!), I prefer french as language !!
+
+Contact:
+========
+
+If you have any questions about my projects, Any additions or any
+suggestions, please contact me at:
+
+ klkeano@Caramail.com
+
+Copyright © 03/2005 = KACI Lounes
+
+EOF.
